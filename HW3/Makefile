@@ -2,13 +2,13 @@ CFLAGS = -c -Wall
 CC = gcc
 LIBS =  -lm 
 
-all: resolver
+all: client server
 
-resolver: main.o
-	${CC} main.o  -o resolver
+client: client.c
+	${CC} client.c  -o client
 
-main.o: main.c
-	${CC} ${CFLAGS} main.c
+server: server.c
+	${CC} server.c  -o server
 
 clean:
 	rm -f *.o *~
