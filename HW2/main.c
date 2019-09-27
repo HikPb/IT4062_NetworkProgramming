@@ -50,6 +50,10 @@ int ipToHostname(char *param, struct in_addr ip){
     }
     printf("IP: %s\n",param);
     printf("    Official name: %s\n",hp->h_name);
-    printf("    Alias name: %s\n", hp->h_aliases[0]);
+    printf("    Alias name:\n");
+    for(int i =0; hp->h_aliases[i]!=NULL;i++){
+        printf("    %s\n", hp->h_aliases[i]);
+
+    }
     return 0;
 }
