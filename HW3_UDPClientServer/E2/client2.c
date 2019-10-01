@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
 					MSG_WAITALL, (struct sockaddr *) &server_addr, 
 					&sin_size); 
 		buffer[bytes_received] = '\0'; 
-		printf("[+]Server reply: %s\n",buffer);
+		printf("[+]Server reply: \n%s",buffer);
 	}
 	close(sockfd); 
 	return 0; 

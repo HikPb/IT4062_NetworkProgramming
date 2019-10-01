@@ -47,12 +47,12 @@ int main(int argc, char* argv[]) {
 		perror("bind failed"); 
 		exit(EXIT_FAILURE); 
 	} 
-	char result[100];
+	char result[1000];
 	struct in_addr ip;
 	int x;
 	while (1)
 	{
-		memset(result,'\0',100);
+		memset(result,'\0',1000);
 		bytes_received = recvfrom(sockfd, (char *)buffer, BUFF_SIZE, MSG_WAITALL, ( struct sockaddr *) &client_addr, &sin_size); 
 		buffer[bytes_received] = '\0'; 
 		printf("\tReceive: \"%s\" from client %s:%d\n", buffer, inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port)); 
@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
 	return 0; 
 } 
 
-int hostnameToIp(char *param, char *result){
+int hostnameToIp(char *param, char *message){
     struct hostent *he;
     struct in_addr **addr_list;
 
@@ -74,20 +74,32 @@ int hostnameToIp(char *param, char *result){
         herror("gethostbyname");
         return 1;
     }
-	
-    ;
     addr_list = (struct in_addr **)he->h_addr_list;
-    strcpy(result,inet_ntoa(*addr_list[0])); 
+	strcpy(message,"Official name: ");
+	strcat(message, inet_ntoa(*addr_list[0]));
+	strcat(message, "\nAlias name:\n");
+	for (int i = 1; addr_list[i] != NULL; i++)
+	{
+		strcat(message,inet_ntoa(*addr_list[i]));
+		strcat(message, "\n");
+	}
     return 0;
 }
 
-int ipToHostname(char *param, struct in_addr ip, char *result){
+int ipToHostname(char *param, struct in_addr ip, char *message){
     
     struct hostent *hp;
     if ((hp = gethostbyaddr((const void *)&ip, sizeof ip, AF_INET)) == NULL) {
         herror("gethostbyaddr");
         return 1;
     }
-    strcpy(result,hp->h_name);
+    //strcpy(result,hp->h_name);
+	strcpy(message,"Official name: ");
+	strcat(message, hp->h_name);
+	strcat(message, "\nAlias name:\n");
+	for(int i =0; hp->h_aliases[i]!=NULL;i++){
+    	strcat(message, hp->h_aliases[i]);
+		strcat(message,"\n");
+    }
     return 0;
 }

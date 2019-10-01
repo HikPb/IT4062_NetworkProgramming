@@ -10,7 +10,7 @@
 
 #define BUFF_SIZE 1024 
 
-int separateLetNum(char *, char *);
+int separateLetNum(char *, char *,char *);
 
 // Driver code 
 int main(int argc, char* argv[]) { 
@@ -46,25 +46,28 @@ int main(int argc, char* argv[]) {
 		exit(EXIT_FAILURE); 
 	} 
 	char result[100];
+	char number[50];
 	while (1)
 	{
 		memset(result,'\0',100);
+		memset(number,'\0',50);
 		bytes_received = recvfrom(sockfd, (char *)buffer, BUFF_SIZE, MSG_WAITALL, ( struct sockaddr *) &client_addr, &sin_size); 
 		buffer[bytes_received] = '\0'; 
 		printf("\tReceive: \"%s\" from client %s:%d\n", buffer, inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port)); 
-		int x = separateLetNum(buffer,result);
+		int x = separateLetNum(buffer,result,number);
 		if(x==1){
 			printf("[Error]: Invalid characters.\n");
 			strcpy(result,"Error: Invalid character");
 		}
+		printf("[+]Server reply: %s %s\n",buffer,number);
 		sendto(sockfd, (char *)result, strlen(result), MSG_CONFIRM, (const struct sockaddr *) &client_addr, sizeof(client_addr)); 
-		printf("[+]Message was sent to client....\n"); 
+		printf("[+]Message 1 was sent to client....\n"); 
+		sendto(sockfd, (char *)number, strlen(number), MSG_CONFIRM, (const struct sockaddr *) &client_addr, sizeof(client_addr)); 
+		printf("[+]Message 2 was sent to client....\n"); 
 	}
 	return 0; 
 } 
-int separateLetNum(char *buff, char *result){
-	char number[50];
-	memset(number,'\0',50);
+int separateLetNum(char *buff, char *result, char *number){
 	int l1 = strlen(result);
 		int l2 = strlen(number);
 	for(int i=0;i<strlen(buff);i++){
@@ -77,7 +80,5 @@ int separateLetNum(char *buff, char *result){
 			l1++;
 		}else return 1;
 	}
-	*(result+l1) = ' ';
-	strcat(result,number);
 	return 0;
 }

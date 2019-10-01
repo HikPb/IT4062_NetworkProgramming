@@ -34,10 +34,12 @@ int main(int argc, char* argv[]) {
 	server_addr.sin_addr.s_addr = inet_addr(argv[1]); 
 	server_addr.sin_port = htons(atoi(argv[2])); 
 
+	char number[50];
 	//Communicate with server
 	while (1){
 		printf("\nInsert string:");
 		memset(buffer,'\0',(strlen(buffer)+1));
+		memset(number,'\0',(strlen(number)+1));
 		fgets(buffer, BUFF_SIZE, stdin);
 		if(buffer[0]=='\n') break;
 		buffer[strlen(buffer)-1]='\0';
@@ -50,7 +52,11 @@ int main(int argc, char* argv[]) {
 					MSG_WAITALL, (struct sockaddr *) &server_addr, 
 					&sin_size); 
 		buffer[bytes_received] = '\0'; 
-		printf("[+]Server reply: %s\n",buffer);
+		bytes_received = recvfrom(sockfd, (char *)number, sizeof(number), 
+					MSG_WAITALL, (struct sockaddr *) &server_addr, 
+					&sin_size); 
+		number[bytes_received] = '\0'; 
+		printf("[+]Server reply: %s %s\n",buffer,number);
 	}
 	close(sockfd); 
 	return 0; 
