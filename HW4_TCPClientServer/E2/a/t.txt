@@ -1,0 +1,14 @@
+ksfaslfa
+kdsflslslf
+sfkaslfldsf
+
+ char path[1024];
+        memset(path,'\0',strlen(path)+1);
+        printf("\nInsert path:");
+        fgets(path, 1024, stdin);
+        if (path == NULL)
+        {
+            perror("Can't get filename");
+            exit(1);
+        }
+        path[strlen(path)-1]='\0';
