@@ -15,7 +15,7 @@
 #define BACKLOG 2   /* Number of allowed connections */
 #define BUFF_SIZE 1024
 #define MAX_SIZE 10e6 * 100
-#define STORAGE "./storage/" //default save file place
+#define STORAGE "./Storage/" //default save file place
 #define EXISTEDFILE "Error: File da ton tai "
 #define SEND_SIZE 1024
 
@@ -123,7 +123,7 @@ int main(int argc, char **argv)
 						printf("\nConnection closed");
 						break;
 					}
-					printf("Uploaded file name: %s, Size of file: %ld\n\n", fileName, filelen);
+					printf("Uploaded file name: %s.\n\n", fileName);
 
 					int sumByte = 0;
 					fileptr = fopen(name, "wb");
@@ -131,7 +131,7 @@ int main(int argc, char **argv)
 					while(1) {
 						bytes_received = recv(conn_sock, ndFile, SEND_SIZE, 0);
 						if(bytes_received == 0) {
-							printf("Error: Truyen File that bai \n");
+							printf("Error: Gui File that bai \n");
 						}
 						sumByte += bytes_received;
 						fwrite(ndFile, bytes_received, 1, fileptr);
