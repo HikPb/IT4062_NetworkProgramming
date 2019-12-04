@@ -3,6 +3,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/select.h>
+#include <sys/uio.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <string.h>
@@ -58,12 +59,12 @@ void resultMessage(int sockfd, char buffer[], int len)
     {
         iov[0].iov_base = "error";
         iov[0].iov_len = sizeof("error");
-        sprintf(length_1, "%d", iov[0].iov_len);
+        sprintf(length_1, "%ld", iov[0].iov_len);
         send(sockfd, length_1, strlen(length_1), 0);
         sleep(1/2);
         iov[1].iov_base = "containt special symbol";
         iov[1].iov_len = sizeof("containt special symbol");
-        sprintf(length_2, "%d\n", iov[1].iov_len);
+        sprintf(length_2, "%ld\n", iov[1].iov_len);
         send(sockfd, length_2, strlen(length_2), 0);
         sleep(1/2);
     }
