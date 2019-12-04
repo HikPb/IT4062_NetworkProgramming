@@ -1,11 +1,9 @@
-
-
 void io_handler(int); /*This is the main I/O procedure */
 
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-/* #include <netdb.h> */
+#include <unistd.h>
 #include <fcntl.h>
 #include <signal.h>
 #include <stdio.h>
@@ -14,7 +12,6 @@ void io_handler(int); /*This is the main I/O procedure */
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <string.h>
-#include <unistd.h>
 #include <netdb.h>
 #define BUFF_SIZE 1024
 
@@ -146,14 +143,14 @@ int main(int argc, char *argv[])
     // second: set the process id or process group id that is to receive
     // notification of pending input to its own process id or process
     // group id
-    if (fcntl(sock, F_SETOWN, getpid()) < 0)
+    if (fcntl(sock, __F_SETOWN, getpid()) < 0)
     {
         perror("fcntl F_SETOWN");
         exit(1);
     }
 
     // third: allow receipt of asynchronous I/O signals
-    if (fcntl(sock, F_SETFL, FASYNC) < 0)
+    if (fcntl(sock, F_SETFL, FASYNC) < 0) //FASYNC dc su dung tren phien ban linux cu
     {
         perror("fcntl F_SETFL, FASYNC");
         exit(1);

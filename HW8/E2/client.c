@@ -8,6 +8,8 @@
 #include <netdb.h>
 #include <sys/socket.h>
 #include <sys/wait.h>
+//#include <fcntl.h> // for open
+#include <unistd.h> // for close
 
 #define BUFF_SIZE 1024
 int main(int argc, char *argv[])
@@ -41,7 +43,7 @@ int main(int argc, char *argv[])
 
     their_addr.sin_family = AF_INET;            /* host byte order */
     their_addr.sin_port = htons(atoi(argv[2])); /* short, network byte order */
-    their_addr.sin_addr = *((struct in_addr *)he->h_addr);
+    their_addr.sin_addr = *((struct in_addr *)he->h_addr_list[0]);
     bzero(&(their_addr.sin_zero), 8); /* zero the rest of the struct */
     while (1)
     {
