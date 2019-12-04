@@ -1,0 +1,4 @@
+a a 1
+bbb bbb 1
+ccc cc12 0
+ddd abcd 1
